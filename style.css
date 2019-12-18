@@ -1,7 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Courier+Prime&display=swap");
 
+html {
+    height: 100%;
+}
+
 body {
-  background: linear-gradient(top, rgb(66, 68, 218), rgb(7, 6, 6));
+  background: linear-gradient(top, rgb(66, 68, 218), rgb(13, 152, 156));
   overflow: hidden;
   height: 100%;
 }
@@ -18,9 +22,14 @@ canvas {
   display: block;
 }
 
+.title {
+    position: absolute;
+    top: 10px;
+}
+
 .score {
   font-family: "Courier Prime", monospace;
-  font-weight: 900;
-  color: azure;
-  font-size: 30px;
+  font-weight: 400;
+  color: rgb(20, 34, 167);
+  font-size: 25px;
 }
