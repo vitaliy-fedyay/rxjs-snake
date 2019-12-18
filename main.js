@@ -21,17 +21,15 @@ let slicedToArray = function () {
     } else if (Symbol.iterator in Object(arr)) {
       return sliceIterator(arr, i);
     } else {
-      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+      throw new TypeError("Error: invalid attempt");
     }
   };
 }();
 
 // Vector
-
 let Vector = function Vector() {
   let x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
   let y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
   this.x = x;
   this.y = y;
 };
@@ -70,7 +68,6 @@ Vector.random = function (max, size) {
 };
 
 // Drawing
-
 let canvas = document.getElementById('snake');
 let ctx = canvas.getContext('2d');
 
@@ -94,20 +91,17 @@ function drawScore(score) {
 function drawBoard(fillColor, strokeColor) {
   ctx.fillStyle = fillColor;
   ctx.strokeStyle = strokeColor;
-
   ctx.fillRect(0, 0, canvas.height, canvas.width);
-
   ctx.beginPath();
+
   for (let x = 0.5; x < canvas.width; x += config.cellSize.x) {
     ctx.moveTo(x, 0);
     ctx.lineTo(x, canvas.height);
   }
-
   for (let y = 0.5; y < canvas.height; y += config.cellSize.y) {
     ctx.moveTo(0, y);
     ctx.lineTo(canvas.width, y);
   }
-
   ctx.stroke();
   ctx.closePath();
 }
@@ -117,11 +111,9 @@ function drawInstructions() {
   ctx.textAlign = 'center';
   ctx.font = '20px Courier Prime';
   ctx.fillText('press any arrow key to start', canvas.width / 2, canvas.height / 1.2);
-
 }
 
 // Game
-
 function init() {
   canvas.setAttribute('tabindex', 1);
   canvas.style.outline = 'none';
@@ -133,7 +125,6 @@ function init() {
 
 function update(state) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   drawBoard(config.boardColor);
   drawSnake(state.snake);
   drawFood(state.food);
@@ -153,8 +144,8 @@ let keyMap = {
   39: move(new Vector(1, 0)),
   40: move(new Vector(0, 1))
 };
-// Config
 
+// Config
 let config = {
   tickerInterval: 100,
   snakeSpeed: 1,
@@ -191,7 +182,6 @@ let snakeHead$ = ticker$.withLatestFrom(input$).scan(function (snake, ref) {
   let ref2 = slicedToArray(ref, 2),
     ticker = ref2[0],
     dir = ref2[1];
-
   return dir(snake);
 }, config.initial.snake);
 
@@ -211,7 +201,6 @@ let snake$ = snakeHead$.withLatestFrom(length$).scan(function (prevSnake, ref3) 
   let ref4 = slicedToArray(ref3, 2),
     head = ref4[0],
     length = ref4[1];
-
   let snakeHistory = R.union(prevSnake, [head]);
   let snake = R.takeLast(length - 1, snakeHistory);
   return snake;
@@ -225,8 +214,6 @@ let game$ = Rx.Observable.combineLatest(food$, score$, snake$, ticker$, function
     ticker: ticker
   };
 });
-
-// Do it
 
 init();
 game$.subscribe(function (state) {
